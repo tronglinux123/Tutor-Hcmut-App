@@ -23,38 +23,41 @@ import RootLayout from './layout/RootLayout';
 
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
 import Header from './component/Header';
+import StudyDetail from './pages/StudyDetail'; // thêm import
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-      <Route path='/' element={<RootLayout />}>
-        <Route index element={<Home />} />
-        <Route path='library' element={<Library />} />
-        <Route path='settingstudy' element={<MentorRoute><SettingStudy /></MentorRoute>} />
-        <Route path='study' element={<MenteeRoute><Study /></MenteeRoute>} />
-        <Route path='study/dangkymonhoc' element={<MenteeRoute><DangKyMonHoc /></MenteeRoute>} />
-        <Route path='user_management' element={<AdminRoute><User_management /></AdminRoute>} />
-        <Route path='class_management' element={<AdminRoute><Class_management /></AdminRoute>} />
-        <Route path='browse_mentor' element={<AdminRoute><Browse_mentor /></AdminRoute>} />
-      </Route>
-      <Route path='/login' element={<Login />} />
-      {/* <Route 
-        path='/dangkymentor' 
-        element={
-          <MentorApplyRoute>
-            <DKMentor />
-          </MentorApplyRoute>
-        } 
-      /> */}
-      {/* <Route 
-        path='/admin'
-        element={
-          <AdminRoute>
-            <Admin />
-          </AdminRoute>
-        }
-      /> */}
+        <Route path='/' element={<RootLayout />}>
+          <Route index element={<Home />} />
+          <Route path='library' element={<Library />} />
+          <Route path='settingstudy' element={<MentorRoute><SettingStudy /></MentorRoute>} />
+          <Route path='study' element={<MenteeRoute><Study /></MenteeRoute>} />
+          {/* Route chi tiết lớp cho mentee */}
+          <Route path='study/class/:pairID' element={<MenteeRoute><StudyDetail /></MenteeRoute>} />
+          <Route path='study/dangkymonhoc' element={<MenteeRoute><DangKyMonHoc /></MenteeRoute>} />
+          <Route path='user_management' element={<AdminRoute><User_management /></AdminRoute>} />
+          <Route path='class_management' element={<AdminRoute><Class_management /></AdminRoute>} />
+          <Route path='browse_mentor' element={<AdminRoute><Browse_mentor /></AdminRoute>} />
+        </Route>
+        <Route path='/login' element={<Login />} />
+        {/* <Route 
+          path='/dangkymentor' 
+          element={
+            <MentorApplyRoute>
+              <DKMentor />
+            </MentorApplyRoute>
+          } 
+        /> */}
+        {/* <Route 
+          path='/admin'
+          element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }
+        /> */}
       </>
     )
   )
