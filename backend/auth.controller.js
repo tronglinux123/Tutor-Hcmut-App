@@ -5,7 +5,7 @@ const min = 10000;
 const max = 99999;
 const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
 
-// đăng ký
+// đăng ký (mentee)
 exports.register = async (req, res) => {
     const { name, email_dk, pass_dk, phone, gender, birthday } = req.body;
     if (!name || !email_dk || !pass_dk || !phone || !gender || !birthday){
@@ -32,27 +32,26 @@ exports.register = async (req, res) => {
     }   
 };
 
-// registermentor
+// đăng ký mentor (chỉ sửa bảng và role)
 exports.registermentor = async (req, res) => {
     const { name, email_dk, pass_dk, phone, gender, birthday, job, specialized, yearstudy, gpa } = req.body;
     if (!name || !email_dk || !pass_dk || !phone || !gender || !birthday || !job || !specialized || !yearstudy || !gpa){
         return res.status(400).json({ message: "Vui lòng điền đủ"});
     }
     try {
-        console.log('hi')
         const hashedPassword = await bcrypt.hash(pass_dk, saltRounds);
         const userId = '23' + randomNum;
         const SQL = 'INSERT INTO user (UserID, FullName, Email, Password, Phone, Gender, DateOfBirth, Role) VALUES (?,?,?,?,?,?,?,?)';
         const [result] = await pool.execute(
             SQL,
-            [userId,name,email_dk,hashedPassword,phone,gender,birthday,'mentee']
+            [userId,name,email_dk,hashedPassword,phone,gender,birthday,'mentor']
         );
         return res.status(201).json({
-            message: 'Đăng ký tài khoản thành công',
+            message: 'Đăng ký mentor thành công',
             userId: userId
         })
     } catch (err) {
-        console.error('Lỗi khi đăng ký',err);
+        console.error('Lỗi khi đăng ký mentor',err);
         if (err.code === 'ER_DUP_ENTRY') { 
             return res.status(409).json({ message: 'Email này đã được sử dụng. Vui lòng thử email khác.' });
         }
@@ -60,7 +59,7 @@ exports.registermentor = async (req, res) => {
     }   
 };
 
-// login
+// đăng nhập (chỉ sửa users -> user)
 exports.login = async (req, res) => {
     const { email,password } = req.body;
     if (!email || !password) {

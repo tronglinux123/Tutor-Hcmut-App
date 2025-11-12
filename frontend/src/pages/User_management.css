@@ -1,0 +1,252 @@
+/* NỀN CHUNG CHO TRANG */
+.user_management_container {
+  display: flex;
+  gap: 24px;
+  padding: 28px 34px;
+  height: calc(100vh - 80px);
+  background: linear-gradient(135deg, #e8eeff, #f8f9ff);
+}
+
+/* ===== DANH SÁCH NGƯỜI DÙNG ===== */
+.user_list {
+  width: 320px;
+  background: white;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  overflow-y: auto;
+}
+
+.user_list h3 {
+  color: #043792;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* Item */
+.user_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: 0.25s;
+  background: linear-gradient(135deg, #e1eaff 0%, #d5e0ff 100%);
+  border: 1px solid rgba(64, 123, 255, 0.25);
+  color: #0a2c6b;
+  font-weight: 500;
+}
+
+
+.user_item:hover {
+  background: #d9e4ff;
+  transform: translateX(3px);
+}
+
+.role_tag {
+  padding: 4px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.role_tag.mentor { background: #007bff; }
+.role_tag.mentee, .role_tag.User { background: #b122ff; }
+
+/* ===== KHUNG CHI TIẾT ===== */
+.user_detail {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.09);
+  overflow-y: auto;
+}
+
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.tabs button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #e3e9ff;
+  color: #0f3fbf;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.tabs button.active {
+  background: #0f3fbf;
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ===== THÔNG TIN ===== */
+.info_section h2,
+.schedule_section h2 {
+  margin-bottom: 18px;
+  font-weight: 700;
+  color: #043792;
+}
+
+.info_section p {
+  font-size: 15px;
+  margin: 8px 0;
+  color: #222;
+}
+
+/* ===== THỜI KHÓA BIỂU TABLE ===== */
+.schedule_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.schedule_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 15px;
+}
+
+.schedule_table th {
+  background: #d1dcff; /* Xanh rõ hơn */
+  color: #0a2c6b;
+  font-weight: 700;
+  padding: 12px;
+  border-bottom: 2px solid #99a8d8;
+}
+
+.schedule_table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #d4dbf8;
+  color: #22324f;
+}
+
+/* Hover highlight để dễ theo dõi */
+.schedule_table tbody tr:hover {
+  background: #eef3ff;
+  transition: 0.25s;
+}
+.info_row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px; /* tăng khoảng cách cân đối */
+  padding-top: 10px;
+}
+
+/* text nên rộng hơn 60% */
+.info_text {
+  flex: 1.2;
+}
+
+/* avatar chỉ chiếm không gian nhỏ */
+.avatar_container {
+  flex: 0.8;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.avatar_container img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: white;
+  border: 3px solid #1b4cc9;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+
+/* Text bên trái */
+.info_text {
+  flex: 1;
+}
+
+/* Avatar bên phải */
+.avatar_container {
+  width: 140px;           /* chỉnh nhỏ */
+  display: flex;
+  justify-content: center;
+}
+
+.avatar_container img {
+  width: 120px;           /* kích thước avatar */
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: white;
+  border: 3px solid #1b4cc9;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* LAYOUT THỜI KHÓA BIỂU */
+.status_table th {
+  background: #e8edff;
+  font-weight: 600;
+  color: #09348b;
+}
+
+.status_table td,
+.status_table th {
+  padding: 10px;
+  border: 1px solid #cfd7f5;
+  text-align: center;
+}
+
+.status_table tbody tr:hover {
+  background: #f3f6ff;
+}
+
+/* Checkbox UI đẹp */
+
+/* Custom checkbox đẹp cho status_table */
+
+
+.status_table input[type="checkbox"] {
+}
+
+.status_table .custom-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #1b4cc9;
+  border-radius: 5px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.status_table .custom-checkbox.checked {
+  background: #1b4cc9;
+  border-color: #1b4cc9;
+}
+
+.status_table .custom-checkbox svg {
+  display: none;
+}
+
+.status_table .custom-checkbox.checked svg {
+  display: block;
+  position: absolute;
+  left: 4px;
+  top: 2px;
+}
+
+

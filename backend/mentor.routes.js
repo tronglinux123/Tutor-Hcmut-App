@@ -1,12 +1,11 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const mentorController = require('./mentor.controller');
+const mentorController = require("./mentor.controller");
 
-router.post('/mentorApplication', mentorController.applicate);
-router.post('/ApplicationCheck', mentorController.check);
-router.post('/ApplicationCheckByAdmin', mentorController.select);
-router.post('/deleteapply', mentorController.delete);
-router.post('/accessapply', mentorController.access);
+router.post("/apply", mentorController.applicate);
+router.post("/check", mentorController.check);
+router.get("/list", mentorController.getAllApplications); // ✅ thêm dòng này
+router.post("/reject", mentorController.delete);
+router.post("/approve", mentorController.access);
 
-
-module.exports = router
+module.exports = router;
