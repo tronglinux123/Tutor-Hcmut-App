@@ -35,6 +35,19 @@ function BrowseMentor() {
 		);
 	};
 
+	const handlePending = async (id) => {
+		const previous = applications.find((it) => it.id === id)?.status;
+		if (previous === "pending") return;
+		updateLocalStatus(id, "pending");
+		try {
+			await axios.post("http://localhost:5000/api/pending", { id });
+			setFeedback({ type: "info", message: "Đã chuyển về Pending." });
+		} catch {
+			updateLocalStatus(id, previous || "pending");
+			setFeedback({ type: "error", message: "Không thể chuyển về Pending." });
+		}
+	};
+
 	const handleApprove = async (id) => {
 		const previous = applications.find((it) => it.id === id)?.status;
 		if (previous === "approved") return;
@@ -74,6 +87,35 @@ function BrowseMentor() {
 						<option value="approved">Approved</option>
 						<option value="rejected">Rejected</option>
 					</select>
+					<button
+						className="reset-pending-btn"
+						type="button"
+						onClick={async () => {
+							try {
+								await axios.post("http://localhost:5000/api/pending/bulk", { all: true });
+								setApplications((prev) => prev.map((it) => (
+									it.status === 'approved' ? it : { ...it, status: 'pending' }
+								)));
+								setFeedback({ type: 'info', message: 'Đã đặt tất cả hồ sơ (trừ Approved) về Pending.' });
+							} catch {
+								// Fallback: nếu API bulk chưa có (404), gọi từng hồ sơ qua /api/pending
+								try {
+									const ids = applications.filter((it) => it.status !== 'approved').map((it) => it.id);
+									for (const id of ids) {
+										await axios.post("http://localhost:5000/api/pending", { id });
+									}
+									setApplications((prev) => prev.map((it) => (
+										it.status === 'approved' ? it : { ...it, status: 'pending' }
+									)));
+									setFeedback({ type: 'info', message: 'Đã đặt về Pending (fallback từng hồ sơ).' });
+								} catch {
+									setFeedback({ type: 'error', message: 'Không thể đặt về Pending. Hãy khởi động lại backend.' });
+								}
+							}
+					}}
+					>
+						Đặt tất cả Pending
+					</button>
 				</div>
 
 				{feedback && (
@@ -91,6 +133,7 @@ function BrowseMentor() {
 							<th>Năm học</th>
 							<th>GPA</th>
 							<th>Trạng thái</th>
+							<th>Pending</th>
 							<th>Approve</th>
 							<th>Reject</th>
 						</tr>
@@ -111,6 +154,16 @@ function BrowseMentor() {
 										{item.status === "approved" && "Approved"}
 										{item.status === "rejected" && "Rejected"}
 									</span>
+								</td>
+								<td>
+									<button
+										type="button"
+										className={`status-toggle pending ${item.status === "pending" ? "checked" : ""}`}
+										onClick={(e) => { e.stopPropagation(); handlePending(item.id); }}
+										aria-pressed={item.status === "pending"}
+									>
+										{item.status === "pending" && <span>✔</span>}
+									</button>
 								</td>
 								<td>
 									<button
@@ -142,7 +195,7 @@ function BrowseMentor() {
 						))}
 
 						{filtered.length === 0 && (
-							<tr><td colSpan="7">Không có hồ sơ phù hợp</td></tr>
+						<tr><td colSpan="9">Không có hồ sơ phù hợp</td></tr>
 						)}
 					</tbody>
 				</table>

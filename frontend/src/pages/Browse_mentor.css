@@ -59,6 +59,20 @@
   min-width: 120px;
 }
 
+.reset-pending-btn {
+  margin-left: 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #f7e0a3;
+  background: linear-gradient(135deg, #fef6de, #ffe9b0);
+  color: #9c6a00;
+  font-weight: 600;
+  cursor: pointer;
+}
+.reset-pending-btn:hover {
+  background: linear-gradient(135deg, #fff3c9, #ffe29a);
+}
+
 .status_table {
   width: 100%;
   border-collapse: separate;
@@ -175,6 +189,20 @@
   border-color: #d13d3d;
   color: white;
   box-shadow: 0 8px 16px rgba(215, 74, 74, 0.35);
+}
+
+/* Pending toggle (read-only visual) */
+.status-toggle.pending {
+  background-color: #f1f5ff;
+  border-color: #c9d9ff;
+  box-shadow: 0 4px 10px rgba(33, 80, 207, 0.12);
+  cursor: pointer;
+}
+.status-toggle.pending.checked {
+  background: linear-gradient(135deg, #f4c46d, #e2a73a);
+  border-color: #e2a73a;
+  color: white;
+  box-shadow: 0 8px 16px rgba(244, 196, 109, 0.35);
 }
 
 button.status-toggle {
