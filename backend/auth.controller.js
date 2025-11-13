@@ -1,9 +1,20 @@
 const pool = require('./db');
 const bcrypt = require('bcrypt');
 const saltRounds =10;
-const min = 10000; 
-const max = 99999;
-const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
+
+// Tạo UserID duy nhất theo role (Sxxxxx cho mentee, Mxxxxx cho mentor)
+async function generateUniqueUserId(prefix) {
+    const maxTry = 7;
+    for (let i = 0; i < maxTry; i++) {
+        // 6 chữ số ngẫu nhiên để tránh trùng lặp
+        const suffix = Math.floor(100000 + Math.random() * 900000);
+        const id = `${prefix}${suffix}`;
+        const [rows] = await pool.execute('SELECT UserID FROM user WHERE UserID = ?', [id]);
+        if (rows.length === 0) return id;
+    }
+    // fallback dùng timestamp nếu vẫn trùng
+    return `${prefix}${Date.now()}`;
+}
 
 // đăng ký (mentee)
 exports.register = async (req, res) => {
@@ -13,7 +24,7 @@ exports.register = async (req, res) => {
     }
     try {
         const hashedPassword = await bcrypt.hash(pass_dk, saltRounds);
-        const userId = '23' + randomNum;
+        const userId = await generateUniqueUserId('S');
         const SQL = 'INSERT INTO user (UserID, FullName, Email, Password, Phone, Gender, DateOfBirth, Role) VALUES (?,?,?,?,?,?,?,?)';
         const [result] = await pool.execute(
             SQL,
@@ -40,7 +51,7 @@ exports.registermentor = async (req, res) => {
     }
     try {
         const hashedPassword = await bcrypt.hash(pass_dk, saltRounds);
-        const userId = '23' + randomNum;
+        const userId = await generateUniqueUserId('M');
         const SQL = 'INSERT INTO user (UserID, FullName, Email, Password, Phone, Gender, DateOfBirth, Role) VALUES (?,?,?,?,?,?,?,?)';
         const [result] = await pool.execute(
             SQL,

@@ -1,0 +1,121 @@
+.studydetail {
+  padding: 20px;
+  background: #fff;
+  color: #0f1d44;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.studydetail__topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.studydetail__title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f1d44;
+}
+
+.sd__btn {
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid #0f1d44cb;
+  background: #fff;
+  color: #0f1d44;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .12s ease, background .12s ease, color .12s ease;
+}
+.sd__btn:hover {
+  transform: scale(0.98);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+}
+
+.sd__btn--back {
+  color: #3B61CB;
+  border-color: #3B61CB;
+}
+
+.sd__btn--primary {
+  background: #3B61CB;
+  color: #fff;
+  border-color: #3B61CB;
+}
+
+.sd__notice {
+  margin: 6px 2px 14px;
+  padding: 10px 12px;
+  border: 1px dashed rgba(15,29,68,0.35);
+  border-radius: 8px;
+  background: #f9fbff;
+  color: #0f1d44;
+  font-size: 14px;
+}
+
+.sd__state {
+  color: #374151;
+}
+
+.studydetail__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.sd__card {
+  border: 1px solid rgba(15,29,68,0.3);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 4px 4px 14px rgba(0,0,0,0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sd__cardHead {
+  padding: 12px 14px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(15,29,68,0.12);
+  background: #f6f8ff;
+}
+
+.sd__list {
+  padding: 8px 10px;
+}
+
+.sd__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 6px;
+  border-bottom: 1px dashed rgba(15,29,68,0.15);
+}
+.sd__row:last-child { border-bottom: none; }
+
+.sd__rowTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f1d44;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sd__rowActions { display: flex; gap: 8px; }
+
+.sd__empty {
+  padding: 12px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .studydetail__grid {
+    grid-template-columns: 1fr;
+  }
+}

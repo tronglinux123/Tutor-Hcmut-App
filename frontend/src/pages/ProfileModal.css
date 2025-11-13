@@ -1,0 +1,23 @@
+.pm-overlay{
+  position: fixed; inset:0; background:rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center; z-index: 9999;
+}
+.pm-modal{
+  background:#fff; width: 520px; max-width: 92vw; border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2); padding:18px 20px;
+}
+.pm-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.pm-close{ border:none; background:#eee; border-radius:8px; padding:6px 10px; cursor:pointer;}
+.pm-grid{
+  display:grid; grid-template-columns:140px 1fr; gap:10px 14px; margin-top:8px;
+}
+.pm-grid label{ align-self:center; color:#333; }
+.pm-grid input, .pm-grid select{
+  padding:10px 12px; border:1px solid #ddd; border-radius:8px;
+}
+.pm-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:16px;}
+.pm-btn{ padding:10px 14px; border-radius:8px; border:1px solid #ddd; background:#f6f6f6; cursor:pointer;}
+.pm-primary{ background:#3B61CB; color:#fff; border-color:#3B61CB;}
+.pm-alert{ padding:8px 10px; border-radius:8px; margin:8px 0;}
+.pm-err{ background:#ffe9e9; color:#b00000;}
+.pm-ok{ background:#e9f8ee; color:#137a2a;}
