@@ -202,5 +202,69 @@ router.get('/classes', async (req, res) => {
   }
 });
 
+// =================== PROFILE ===================
+
+// GET /api/profile?email=...
+router.get('/profile', async (req, res) => {
+  const { email } = req.query;
+  if (!email) return res.status(400).json({ message: 'Thiếu email' });
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT UserID, FullName, DateOfBirth, Gender, Phone, Email, Role
+       FROM \`user\`
+       WHERE Email = ? LIMIT 1`, [email]
+    );
+    if (!rows.length) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
+    // không trả password
+    return res.json(rows[0]);
+  } catch (e) {
+    console.error('PROFILE GET ERR:', e);
+    return res.status(500).json({ message: 'Lỗi tải hồ sơ' });
+  }
+});
+
+// PUT /api/profile  (body: { userID, fullName, dateOfBirth, gender, phone, email })
+router.put('/profile', async (req, res) => {
+  let { userID, fullName, dateOfBirth, gender, phone, email } = req.body || {};
+  if (!userID || !fullName || !dateOfBirth || !gender || !phone || !email) {
+    return res.status(400).json({ message: 'Thiếu dữ liệu bắt buộc' });
+  }
+
+  // Validate tối thiểu theo Business Rules
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRe.test(email)) return res.status(400).json({ message: 'Email không hợp lệ' });
+  if (!['M','F'].includes(gender)) return res.status(400).json({ message: 'Giới tính chỉ M/F' });
+  if (!/^\d{9,11}$/.test(phone)) return res.status(400).json({ message: 'SĐT không hợp lệ' });
+  if (fullName.length > 50) return res.status(400).json({ message: 'Họ tên quá 50 ký tự' });
+
+  try {
+    // Email mới đã có người dùng khác?
+    const [existed] = await pool.query(
+      `SELECT UserID FROM \`user\` WHERE Email = ? AND UserID <> ?`,
+      [email, userID]
+    );
+    if (existed.length) return res.status(409).json({ message: 'Email đã được đăng ký trước đó' });
+
+    await pool.query(
+      `UPDATE \`user\`
+       SET FullName=?, DateOfBirth=?, Gender=?, Phone=?, Email=?
+       WHERE UserID=?`,
+      [fullName, dateOfBirth, gender, phone, email, userID]
+    );
+
+    // trả bản ghi mới
+    const [[u]] = await pool.query(
+      `SELECT UserID, FullName, DateOfBirth, Gender, Phone, Email, Role
+       FROM \`user\` WHERE UserID=?`, [userID]
+    );
+    return res.json({ message: 'Cập nhật thành công', profile: u });
+  } catch (e) {
+    console.error('PROFILE PUT ERR:', e);
+    return res.status(500).json({ message: 'Cập nhật thất bại. Vui lòng thử lại sau.' });
+  }
+});
+
+
 
 module.exports = router;
