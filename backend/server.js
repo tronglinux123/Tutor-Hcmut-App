@@ -8,7 +8,7 @@ const authRouters = require('./auth.routes');
 const mentorRouters = require('./mentor.routes');
 
 const pool = require('./db'); // ✅ Thêm dòng này
-const mentorRoutes = require("./mentor.routes");
+// Note: mentorRouters already imported above; avoid duplicate requires
 app.use(cors());
 app.use(express.json());
 app.use('/api', authRouters);
@@ -26,10 +26,6 @@ app.get('/api/users', async (req, res) => {
     console.error("Lỗi lấy danh sách user:", err);
     res.status(500).json({ message: "Lỗi server" });
   }
-});
-// Catch-all 404 handler to avoid HTML error responses
-app.use((req, res) => {
-  res.status(404).json({ error: "Not found" });
 });
 app.get("/api/user/:id", async (req, res) => {
   const userID = req.params.id;
@@ -79,8 +75,70 @@ app.get("/api/user/:id", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+// Minimal classes endpoint to avoid 404s on the frontend; adjust fields as needed
+app.get('/api/classes', async (req, res) => {
+  try {
+    // Lấy danh sách lớp (tutor_pair) kèm mentor, subject -> faculty
+    const [rows] = await pool.execute(
+      `SELECT 
+          tp.pairID,
+          tp.mentorID,
+          u.FullName AS mentorName,
+          tp.Subject_name AS subject,
+          s.FacultyID AS facultyId,
+          f.Faculty_name AS facultyName,
+          tp.day,
+          tp.begin_session,
+          tp.end_session,
+          tp.location,
+          tp.mentee_capacity,
+          tp.mentee_current_count
+       FROM tutor_pair tp
+       LEFT JOIN mentor m ON tp.mentorID = m.mentorID
+       LEFT JOIN user u ON m.mentorID = u.UserID
+       LEFT JOIN subject s ON s.Subject_name = tp.Subject_name
+       LEFT JOIN faculty f ON s.FacultyID = f.FacultyID
+       ORDER BY tp.pairID`
+    );
+
+    const classes = rows.map((r) => ({
+      id: r.pairID,
+      mentorId: r.mentorID,
+      mentorName: r.mentorName,
+      subject: r.subject,
+      facultyId: r.facultyId,
+      facultyName: r.facultyName,
+      mode: 'Offline',
+      location: r.location,
+      capacity: {
+        current: r.mentee_current_count,
+        total: r.mentee_capacity,
+      },
+      day: r.day,
+      sessionRange: `${r.begin_session}-${r.end_session}`,
+      weeks: '1-15',
+    }));
+
+    // Lấy danh sách khoa
+    const [fac] = await pool.execute(
+      'SELECT FacultyID AS id, Faculty_name AS name FROM faculty ORDER BY FacultyID'
+    );
+
+    res.json({ classes, faculties: fac });
+  } catch (err) {
+    console.error('Lỗi lấy danh sách lớp:', err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+});
+
 app.get('/', (req, res) => {
   res.send('Server is running');
+});
+
+// Catch-all 404 handler to avoid HTML error responses (must be after all routes)
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not found' });
 });
 
 app.listen(PORT, () => {

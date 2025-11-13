@@ -233,6 +233,69 @@ exports.access = async (req, res) => {
         if (connection) connection.release();
     }
 };
+
+// Đưa hồ sơ về trạng thái 'waiting' (pending)
+exports.pending = async (req, res) => {
+    try {
+        const { id } = req.body;
+        if (!id) {
+            return res.status(400).json({ message: 'Thiếu id hồ sơ cần chuyển về pending.' });
+        }
+
+        // Không cho revert nếu đã accepted (đã tạo user/mentor qua trigger)
+        const [rows] = await pool.execute(
+            'SELECT status FROM tutor_application WHERE applicationID = ?',[id]
+        );
+        if (rows.length === 0) {
+            return res.status(404).json({ message: 'Không tìm thấy đơn ứng tuyển.' });
+        }
+        if (rows[0].status === 'accepted') {
+            return res.status(400).json({ message: 'Hồ sơ đã được duyệt. Không thể chuyển về Pending.' });
+        }
+
+        const [result] = await pool.execute(
+            "UPDATE tutor_application SET status = 'waiting' WHERE applicationID = ?",
+            [id]
+        );
+        if (result.affectedRows === 0) {
+            return res.status(400).json({ message: 'Không thể cập nhật trạng thái hồ sơ.' });
+        }
+        return res.status(200).json({ message: 'Đã chuyển hồ sơ về Pending.' });
+    } catch (error) {
+        console.error('Lỗi khi chuyển hồ sơ về pending:', error);
+        return res.status(500).json({ message: 'Lỗi hệ thống Server.' });
+    }
+};
+
+// Chuyển nhiều hồ sơ về 'waiting' (pending)
+exports.pendingBulk = async (req, res) => {
+    try {
+        const { ids, all } = req.body || {};
+
+        if (!all && (!Array.isArray(ids) || ids.length === 0)) {
+            return res.status(400).json({ message: 'Thiếu danh sách id hoặc all=true.' });
+        }
+
+        let result;
+        if (all) {
+            // Không revert hồ sơ đã accepted để tránh xung đột trigger
+            [result] = await pool.execute(
+                "UPDATE tutor_application SET status = 'waiting' WHERE status <> 'accepted'"
+            );
+        } else {
+            const placeholders = ids.map(() => '?').join(',');
+            [result] = await pool.execute(
+                `UPDATE tutor_application SET status = 'waiting' WHERE status <> 'accepted' AND applicationID IN (${placeholders})`,
+                ids
+            );
+        }
+
+        return res.status(200).json({ message: 'Đã chuyển về Pending', affected: result.affectedRows || 0 });
+    } catch (error) {
+        console.error('Lỗi khi chuyển nhiều hồ sơ về pending:', error);
+        return res.status(500).json({ message: 'Lỗi hệ thống Server.' });
+    }
+};
 // Lấy tất cả hồ sơ mentor (pending + rejected + approved)
 exports.getAllApplications = async (_req, res) => {
     try {
@@ -244,14 +307,10 @@ exports.getAllApplications = async (_req, res) => {
                 ta.GPA,
                 ta.job,
                 ta.sinh_vien_nam,
-                CASE 
-                    WHEN u.UserID IS NOT NULL THEN 'accepted'
-                    ELSE ta.status
-                END AS effective_status,
+                ta.status AS status,
                 ta.FacultyID,
                 fa.Faculty_name
              FROM tutor_application ta
-             LEFT JOIN user u ON u.UserID = ta.applicationID AND u.Role = 'mentor'
              LEFT JOIN faculty fa ON fa.FacultyID = ta.FacultyID
              ORDER BY ta.applicationID ASC`
         );
@@ -264,7 +323,7 @@ exports.getAllApplications = async (_req, res) => {
             yearstudy: normalizeYear(row.sinh_vien_nam),
             gpa: row.GPA,
             job: row.job,
-            status: normalizeStatus(row.effective_status)
+            status: normalizeStatus(row.status)
         }));
 
         return res.status(200).json(mapped);
