@@ -1,0 +1,114 @@
+.tongdk {
+    /* background-color: aqua; */
+    width: 100%;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cuastrong {
+    /* background-color: aqua; */
+    /* box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2); */
+    margin-top: 20px;
+    color: #FFFFFF;
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    text-shadow: 
+        -1px -1px 0 #000, /* Viền trên trái */
+        1px -1px 0 #000,  /* Viền trên phải */
+        -1px 1px 0 #000,  /* Viền dưới trái */
+        1px 1px 0 #000;
+}
+
+.cuar {
+    box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2);
+    background-color: #0071e9;
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 10px;
+}
+
+.DangKyDayHoc {
+    width:80%;
+    display: flex;
+    justify-content: center;
+    background-color: #3B61CB;
+    border-radius: 10px;
+}
+
+.when_input, .basyou_input, .session_input, .subject_input {
+    margin: 50px;
+    box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.when_input, .subject_input {
+    background-color: white;
+    color: black;
+    width: 500px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.basyou_input {
+    background-color: white;
+    color: black;
+    width: 496px;
+    height: 56px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.fullsession {
+    display: flex;
+}
+
+.session_inputt {
+    margin-top: 50px;
+    box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2);
+}
+
+.session_input, .session_inputt {
+    background-color: white;
+    color: black;
+    width: 245px;
+    height: 60px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.fullbutton {
+    display: flex;
+    justify-content: center;
+}
+
+.out_button {
+    margin-right: 100px;
+    background-color: brown;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.submitdayhoc {
+    background-color: #3B61CB;
+}
+
+.out_button, .submitdayhoc {
+    width: 500px;
+    margin-top: 50px;
+    height: 60px;
+    box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.1s ease;
+}
+
+.submitdayhoc:hover, .out_button:hover {
+    transform: scale(0.95);
+    color: white;
+}

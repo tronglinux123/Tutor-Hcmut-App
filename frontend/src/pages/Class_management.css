@@ -1,0 +1,162 @@
+.manetclass {
+    width: 100%;
+    height: 93%;
+    position: relative;
+    /* overflow: hidden; */
+}
+
+.titlee {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    width: 95%;
+    height: 25px;
+    color: rgb(0, 0, 0);
+    font-size: 5px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.spacee{
+    display: flex; 
+    justify-content: flex-end; 
+    align-items: center;    
+}
+
+.hiii {
+    margin-left: 150px; 
+}
+
+.spacee {
+    margin-left: 150px;
+}
+
+.id1 {
+    width: 70px;
+}
+
+.namesubject {
+    width: 300px;
+}
+
+.idmentor1 {
+    width: 165px;
+}
+
+.tutorMagnetok {
+    background-color: #F3F3F3;
+    width: 97%;
+    height: 87%;
+    border-radius: 7px;
+    margin-top: 10px;
+    border: 2px solid black;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    padding: 20px;
+    /* cursor: pointer; */
+    overflow-x: hidden;
+    /* justify-content: center;
+    display: flex; */
+}
+.applyy {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+    /* margin-bottom: 20px; */
+    margin-top: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); */
+    font-size: 6px;
+    color: black;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.applyy:hover {
+    border-color: #1000f5;
+}
+
+.idenroll{
+    margin-left: 10px;
+    width: 60px;
+} 
+
+.subject-name {
+    margin-left: 10px;
+    width: 300px;
+}
+
+.idmentor {
+    width: 163px;
+}
+
+.nameofmentor {
+    width: 460px;
+}
+
+.inforrenroll {
+    width: 100%;
+    height: 250px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    margin-left: 1px;
+    /* box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); */
+    border: 1px solid black;
+    color: black;
+    font-size: 17px;
+}
+
+.diadiem {
+    margin: 0;
+}
+
+.boxtren {
+    /* background-color: #1000f5; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 600px;
+    height: 50px;
+    margin-top: 20px;
+    margin-left: 150px;
+    margin-bottom: 40px;
+}
+
+.boxmid {
+    /* position: absolute; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 900px;
+    margin-left: 300px;
+    /* margin-bottom: 5px; */
+}
+
+.sens {
+    margin-top: 10px;
+    margin-left: 250px;
+    height: 3px;
+    width: 1000px;
+    background-color: #000000;
+}
+
+.boxdown {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.dayapply {
+    margin-left: 300px;
+    width: 410px;
+}
+
+.tiet {
+    width: 420px;
+}

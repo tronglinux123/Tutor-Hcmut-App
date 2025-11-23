@@ -2,7 +2,7 @@
   padding: 20px;
   background-color: #ffffff;
   display: flex;
-  flex-wrap: wrap; /* Cho phép xuống hàng */
+  flex-wrap: wrap; 
   gap: 20px;
   border-radius: 10px;
 }
@@ -13,16 +13,23 @@
 }
 
 .ex {
-    width: 500px;
-    height: 150px;
+    width: 460px;
+    height: 118px;
     background-color: rgb(255, 255, 255);
     border: 1px solid #0f1d44cb;
     border-radius: 10px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: transform 0.1s ease;
+    color: #003adb;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 15px;
 }
-
+.hsdhaid {
+    color: black;
+}
 .link {
     width: 490px;
 }

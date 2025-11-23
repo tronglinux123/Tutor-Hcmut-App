@@ -1,8 +1,292 @@
-.home {
-    padding: 20px;
+.dangky {
+    /* padding: 20px; */
     background-color: #ffffff; 
-    overflow-y: auto; 
+    overflow-y: hidden; 
     color: black;
-    height: 100%;
+    height: 95%;
+    width: 97.5%;
+    /* overflow: hidden; */
 }
 
+.boxsearch {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search_input {
+    border: 2px solid black;
+    width: 85%;
+    border-radius: 8px;
+    font-size: 15px;
+    height: 40px;
+    color: black;
+    background-color: #ffffff;
+    padding-left: 10px;
+}
+
+.searchbutton {
+    margin-left: 10px;
+    height: 44px;
+    width: 10%;
+    background-color: #3B61CB;
+}
+
+.boxclass {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start ;
+}
+
+.myclassonl {
+    margin-left: 20px;
+}
+
+.classonl, .myclassonl {
+    border: 2px solid black;
+    padding: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.classonl.active-tab, .myclassonl.active-tab {
+    background-color: #cccccc;
+    
+}
+
+.hidariclass, .migiclass {
+    display: none;
+}
+
+.hidariclass.active-tab, .migiclass.active-tab {
+    display: block;
+}
+
+.classtutor {
+    margin-top: 20px;
+    border: 2px solid black;
+    height: 82%;
+    border-radius: 10px;
+    padding-top: 10px;
+    background-color: #F3F3F3;
+    overflow-y: auto;
+}
+
+.subjectname {
+    padding-left: 10px;
+    margin-left: 15px;
+    margin-top: 5px;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    /* padding: 10px; */
+    width: 97%;
+    height: 40px;
+    background-color: white;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+    transition: border-color 0.3s ease;
+    cursor: pointer;
+    user-select: none;
+}
+
+.subjectname:hover {
+    border-color: #0044ff;
+}
+
+.seeclass.move {
+    width: 97.5%;
+    /* height: 250px; */
+    background-color: white;
+    border: 1px solid black;
+    margin-left: 16px;
+    border-radius: 5px;
+}
+
+.nulls {
+    padding: 10px;
+}
+
+.classonlnhe {
+    position: relative;
+    padding: 10px;
+}
+
+.headerclass {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* padding: 20px; */
+    margin-left: 20px;
+}
+
+.namementorheader {
+    width: 500px;
+    cursor: pointer;
+}
+.namementorheaders {
+    width: 500px;
+}
+
+.diadiemhoc {
+    width: 500px;
+}
+
+.howmany {
+    width: 340px;
+}
+
+.duongke {
+    margin-top: 8px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0); 
+    width: 60%;
+    height: 2px;
+    background-color: black;
+}
+
+.midclass {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thuclass, .tietclass {
+    width: 350px;
+}
+
+.duongkeketthuc {
+    margin-left: 70px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 93%;
+    height: 3px;
+    background-color: black;
+}
+
+.select-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+}
+
+.radiobo {
+  -webkit-appearance: none; 
+  appearance: none;         
+  width: 22px;              
+  height: 22px;
+  border: 2px solid #ccc;   
+  border-radius: 50%;       
+  outline: none;
+  cursor: pointer;
+  position: relative;       
+  transition: all 0.3s ease; 
+  background-color: #fff;   
+}
+
+.radiobo:hover {
+  border-color: #666;
+}
+
+.radiobo:checked {
+  border-color: #4CAF50; 
+}
+
+.radiobo::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0); 
+  width: 12px;   
+  height: 12px;
+  border-radius: 50%;
+  background-color: #4CAF50; 
+  transition: transform 0.2s cubic-bezier(0.25, 0.1, 0.25, 1); 
+}
+
+.radiobo:checked::before {
+  transform: translate(-50%, -50%) scale(1); 
+}
+
+.subjectnameafen {
+    margin-left: 10px;
+    width: 93%;
+}
+
+.titleofclasssubject {
+    background-color: white;
+    /* box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5); */
+    margin-left: 15px;
+    border: 2px solid black;
+    width: 97.5%;;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.bodyinmyheart {
+    border-radius: 5px;
+    border: 1px solid black;
+    margin-left: 15.5px;
+    width: 100%;
+    height: 250px;
+    background-color: white;
+    width: 97.5%;
+    margin-bottom: 10px;
+}
+
+.otrenafen {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 15px;
+    padding-top: 15px;
+}
+
+.oduoiafen {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 15px;
+}
+
+.boxback {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sibalssloma {
+    width: 300px;
+}
+.boxbacks {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.siballsoma {
+    width: 350px;
+}
+
+.duongsen {
+    /* margin-top: 5px; */
+    /* margin-bottom: 51px; */
+    width: 900px;
+    height: 2px;
+    background-color: black;
+}
+
+
+.trshing {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    cursor: pointer;
+}

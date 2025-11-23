@@ -63,9 +63,11 @@ function Login() {
       const userRole = response.data.user.role;
       const emailCurrent = response.data.user.email;
       const nameCurrent = response.data.user.name;
+      const Id = response.data.user.id;
       localStorage.setItem('userRole', userRole);
       localStorage.setItem('emailCurrent', emailCurrent);
       localStorage.setItem('nameCurrent', nameCurrent);
+      localStorage.setItem('id', Id);
       console.log('Đăng nhập thành công:', response.data);
       setTimeout(() => {
         navigate('/');
@@ -128,6 +130,16 @@ function Login() {
       }, 0);
       return;
     }
+    console.log(name);
+    console.log(email_dk);
+    console.log(pass_dk);
+    console.log(phone);
+    console.log(sex);
+    console.log(birthday);
+    console.log(job);
+    console.log(specialized);
+    console.log(yearstudy);
+    console.log(gpa);
     try {
       const response = await axios.post(`${BACKEND_URL}/api/registermentor`,{
         name: name,
@@ -408,8 +420,8 @@ function Login() {
                 required 
               >
                 <option value=''>Giới tính</option>
-                <option value='none'>Nam</option>
-                <option value='nam2'>Nữ</option>
+                <option value='M'>Nam</option>
+                <option value='F'>Nữ</option>
               </select>
             </div>
             <div className='birthday'>
@@ -430,9 +442,9 @@ function Login() {
                 className='specialized_input'
                 required
               >
-                <option value=''>Thuộc Khoa</option>
-                <option value='khmt'>Khoa học máy tính</option>
-                <option value='ktmt'>Kĩ thuật máy tính</option>
+                <option value=''>Thuộc chuyên ngành</option>
+                <option value='1'>Khoa học máy tính</option>
+                <option value='2'>Kĩ thuật máy tính</option>
               </select>
             </div>
             <div className='job'>
@@ -444,10 +456,10 @@ function Login() {
                 required
               >
                 <option value=''>Chức danh</option>
-                <option value='giangvien'>Giảng viên</option>
-                <option value='nghiencuusinh'>Nghiên cứu sinh</option>
-                <option value='sinhvien'>Sinh viên</option>
-                <option value='saudaihoc'>Sinh viên sau đại học</option>
+                <option value='giang_vien'>Giảng viên</option>
+                <option value='nghien_cuu_sinh'>Nghiên cứu sinh</option>
+                <option value='sinh_vien'>Sinh viên</option>
+                <option value='sinh_vien_sau_dh'>Sinh viên sau đại học</option>
               </select>
             </div>
             <div className='yearstudy'>
@@ -456,13 +468,13 @@ function Login() {
                 value={yearstudy}
                 onChange={(e) => setYearstudy(e.target.value)}
                 className='yearstudy_input'
-              
+                required
               >
                 <option value=''>Năm học (Null nếu không là sinh viên)</option>
-                <option value='Null'>Null</option>
-                <option value='nam2'>Năm 2</option>
-                <option value='nam3'>Năm 3</option>
-                <option value='nam4'>Năm 4</option>
+                <option value='none'>Null</option>
+                <option value='nam_2'>Năm 2</option>
+                <option value='nam_3'>Năm 3</option>
+                <option value='nam_4'>Năm 4</option>
               </select>
             </div>
             <div className='gpa'>

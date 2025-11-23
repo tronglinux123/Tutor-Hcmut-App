@@ -4,8 +4,8 @@ html, body, #root {
     padding: 0;
     height: 100%; 
     width: 100%;
-    background-color: #f7f9fc; 
-    overflow-y: auto; 
+    background-color: #ffffff; 
+    overflow-y: hidden; 
 
 }
 body {

@@ -1,8 +1,243 @@
 .setting_study {
-    padding: 20px;
+    /* padding: 20px; */
     background-color: #ffffff; 
-    overflow-y: auto; 
+    /* overflow-y: auto;  */
     color: black;
-    height: 100%;
+    width: 100%;
+    height: 93%;
+    position: relative;
+    /* overflow-x: hidden; */
+    /* position: relative; */
+    /* background-color: #3B61CB; */
+    /* border-radius: 10px; */
 }
 
+.main-accep {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 10px;
+}
+
+.cir {
+    background-color: #e9e9e9;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid rgb(146, 146, 146);
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.accep-browse, .wait-browse {
+    width: 98%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border: 2px solid black;
+    box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    padding: 15px;
+}
+
+.senchi {
+    margin-top: 20px;
+    margin-left: 35px;
+    width: 95%;
+    height: 2px;
+    background-color: #292929
+}
+
+.circl-blue, .circl-red {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+}
+
+.circl-blue,.circl-red  {
+    background-color: #322DC3;
+}
+
+.circl-red {
+    background-color: rgb(167, 14, 14);
+}
+
+.accep-class, .wait-class {
+    color: #322DC3;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    padding-top: 15px;
+}
+
+.wait-browse {
+    margin-top: 20px;
+}
+
+.dkmhmoi {
+    display: flex;
+    align-items: center;
+    height: 90px;
+    width: 400px;
+    background-color: #3B61CB;
+    border-radius: 10px;
+    box-shadow: 4px 6px 12px 0 rgba(0, 0, 0, 0.2);
+    margin-top: 30px;
+    transition: transform 0.1s ease;
+    margin-left: 550px;
+    padding: 10px;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+
+.dkmhmoi:hover {
+    transform: scale(0.95);
+    color: #ffffff;
+}
+
+.dautron1 {  
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    background-color: rgb(255, 255, 255);
+    color: #3B61CB;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    margin-right: 85px;
+}
+
+.spacestrong {
+    width: 87%;
+}
+
+.spacestron:hover {
+    color: #0a183f; 
+    transition: color 0.3s ease;
+}
+
+.spacestron {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+
+.trash, .settingimg {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    margin-left: 30px;
+    cursor: pointer;
+}
+
+.chance.move {
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    background-color: #c0d1dfee;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    border-radius: 10px;
+    display: flex;
+    /* align-items: center; */
+    justify-content: space-between;
+
+}
+
+.hidari {
+    margin-left: 70px;
+    margin-top: 70px;
+}
+
+.migi {
+    margin-right: 70px;
+    margin-top: 70px;
+}
+
+.titlesetting, .box2fon, .box3fon {
+    /* padding-top: 20px; */
+    font-size: 20px;
+}
+
+.boxsubject {
+    width: 500px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 2px solid black;
+    font-size: 20px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.boxtime, .boxtimezone {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+}
+
+.boxtimezone, .bas ,.boxtimezone , .whean {
+    margin-bottom: 50px;
+}
+
+.box2, .box3 {
+    width: 230px;
+    height: 50px;
+    background-color: #ffffff;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding-left: 10px;
+    color: black;
+}
+
+.box2 {
+    margin-right: 25px;
+}
+
+.box2fon {
+    width:270px;
+}
+
+.bas_input, .wheninput {
+    width: 500px;
+    height: 54px;
+    border: 2px solid black;
+    background-color: #ffffff;
+    border-radius: 5px;
+    color: black;
+    font-size: 20px;
+}
+
+.box11 {
+    margin-right: 50px;
+}
+
+.ses_input {
+    width: 230px;
+    height: 54px;
+    background-color: #ffffff;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding-left: 10px;
+    color: black;
+}
+
+.submitbutton {
+    background-color: #3B61CB;
+    width: 510px;
+}
+
+.outbutton{
+    background-color: rgb(165, 4, 4);
+    width: 510px;
+    margin-left: 2px;
+}
