@@ -10,46 +10,71 @@ export default function ProfileModal({ open, onClose }) {
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState('');
   const [ok, setOk] = useState('');
+
+  // UPDATED: thêm personalLink vào form state
   const [form, setForm] = useState({
     userID: '',
     fullName: '',
     dateOfBirth: '',
     gender: 'M',
     phone: '',
-    email: emailLocal || ''
+    email: emailLocal || '',
+    personalLink: '' // UPDATED
   });
 
   useEffect(() => {
     if (!open) return;
-    setErr(''); setOk('');
+    setErr('');
+    setOk('');
     if (!emailLocal) { setErr('Chưa đăng nhập'); return; }
+
     setLoading(true);
-    axios.get(`${API}/api/profile`, { params: { email: emailLocal } })
-      .then(r => {
+    axios
+      .get(`${API}/api/profile`, { params: { email: emailLocal } })
+      .then((r) => {
         const p = r.data;
         setForm({
           userID: p.UserID,
           fullName: p.FullName || '',
-          dateOfBirth: (p.DateOfBirth || '').slice(0,10),
+          dateOfBirth: (p.DateOfBirth || '').slice(0, 10),
           gender: p.Gender || 'M',
           phone: p.Phone || '',
-          email: p.Email || ''
+          email: p.Email || '',
+          personalLink: p.PersonalLink || '' // UPDATED: nhận thêm từ BE
         });
       })
-      .catch(e => setErr(e.response?.data?.message || 'Lỗi tải hồ sơ'))
+      .catch((e) => setErr(e.response?.data?.message || 'Lỗi tải hồ sơ'))
       .finally(() => setLoading(false));
   }, [open]);
 
-  const onChange = (k, v) => setForm(s => ({ ...s, [k]: v }));
+  const onChange = (k, v) => setForm((s) => ({ ...s, [k]: v }));
 
   const onSave = async () => {
-    setErr(''); setOk('');
+    setErr('');
+    setOk('');
     try {
       setSaving(true);
-      const { userID, fullName, dateOfBirth, gender, phone, email } = form;
+      const {
+        userID,
+        fullName,
+        dateOfBirth,
+        gender,
+        phone,
+        email,
+        personalLink // UPDATED
+      } = form;
+
+      // UPDATED: gửi thêm personalLink lên API
       const r = await axios.put(`${API}/api/profile`, {
-        userID, fullName, dateOfBirth, gender, phone, email
+        userID,
+        fullName,
+        dateOfBirth,
+        gender,
+        phone,
+        email,
+        personalLink
       });
+
       setOk(r.data.message || 'Cập nhật thành công');
       // cập nhật lại localStorage nếu đổi email / tên
       localStorage.setItem('emailCurrent', r.data.profile.Email);
@@ -65,45 +90,74 @@ export default function ProfileModal({ open, onClose }) {
 
   return (
     <div className="pm-overlay" onClick={onClose}>
-      <div className="pm-modal" onClick={e => e.stopPropagation()}>
+      <div className="pm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="pm-head">
           <h3>Thông tin cá nhân</h3>
-          <button className="pm-close" onClick={onClose}>✕</button>
+          <button className="pm-close" onClick={onClose}>
+            ✕
+          </button>
         </div>
 
-        {loading ? <p>Đang tải...</p> : (
+        {loading ? (
+          <p>Đang tải...</p>
+        ) : (
           <>
             {err && <div className="pm-alert pm-err">{err}</div>}
             {ok && <div className="pm-alert pm-ok">{ok}</div>}
 
             <div className="pm-grid">
               <label>Họ và tên</label>
-              <input value={form.fullName}
-                     onChange={e=>onChange('fullName', e.target.value)} />
+              <input
+                value={form.fullName}
+                onChange={(e) => onChange('fullName', e.target.value)}
+              />
 
               <label>Ngày sinh</label>
-              <input type="date" value={form.dateOfBirth}
-                     onChange={e=>onChange('dateOfBirth', e.target.value)} />
+              <input
+                type="date"
+                value={form.dateOfBirth}
+                onChange={(e) => onChange('dateOfBirth', e.target.value)}
+              />
 
               <label>Giới tính</label>
-              <select value={form.gender}
-                      onChange={e=>onChange('gender', e.target.value)}>
+              <select
+                value={form.gender}
+                onChange={(e) => onChange('gender', e.target.value)}
+              >
                 <option value="M">Nam</option>
                 <option value="F">Nữ</option>
               </select>
 
               <label>Số điện thoại</label>
-              <input value={form.phone}
-                     onChange={e=>onChange('phone', e.target.value)} />
+              <input
+                value={form.phone}
+                onChange={(e) => onChange('phone', e.target.value)}
+              />
 
               <label>Email</label>
-              <input value={form.email}
-                     onChange={e=>onChange('email', e.target.value)} />
+              <input
+                value={form.email}
+                onChange={(e) => onChange('email', e.target.value)}
+              />
+
+              {/* UPDATED: thêm trường Liên kết cá nhân */}
+              <label>Liên kết cá nhân</label>
+              <input
+                value={form.personalLink}
+                onChange={(e) => onChange('personalLink', e.target.value)}
+                placeholder="https://..."
+              />
             </div>
 
             <div className="pm-actions">
-              <button className="pm-btn" onClick={onClose}>Hủy</button>
-              <button className="pm-btn pm-primary" disabled={saving} onClick={onSave}>
+              <button className="pm-btn" onClick={onClose}>
+                Hủy
+              </button>
+              <button
+                className="pm-btn pm-primary"
+                disabled={saving}
+                onClick={onSave}
+              >
                 {saving ? 'Đang lưu...' : 'Lưu thay đổi'}
               </button>
             </div>

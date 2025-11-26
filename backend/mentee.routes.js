@@ -71,25 +71,68 @@ router.get('/subjects/:name/classes', async (req, res) => {
   }
 });
 
-/* 4) Ghi danh lớp */
+/* 4) Ghi danh lớp – ĐÃ ĐỒNG BỘ THEO UC 2.7 */
 router.post('/enroll', async (req, res) => {
   const { pairID, menteeID } = req.body;
-  if (!pairID || !menteeID) return res.status(400).json({ message: 'Thiếu tham số.' });
+  if (!pairID || !menteeID) {
+    return res.status(400).json({ message: 'Thiếu tham số.' });
+  }
+
   try {
+    // Bước kiểm tra trước khi ghi danh:
+    // - Lớp có tồn tại không
+    // - Sĩ số hiện tại so với sĩ số tối đa (UC 2.7 – A2)
+    const [[pair]] = await pool.query(
+      `SELECT mentee_capacity, mentee_current_count
+       FROM tutor_pair
+       WHERE pairID = ?`,
+      [pairID]
+    );
+
+    if (!pair) {
+      return res.status(404).json({ message: 'Lớp học không tồn tại.' });
+    }
+
+    if (pair.mentee_current_count >= pair.mentee_capacity) {
+      // A2: Lớp học đã đủ sĩ số
+      return res.status(400).json({
+        message: 'Ghi danh thất bại vì đã đủ sĩ số.'
+      });
+    }
+
+    // Nếu qua được check sĩ số → tiến hành ghi danh
     await pool.query(
       `INSERT INTO mentee_list(pairID, menteeID) VALUES (?, ?)`,
       [pairID, menteeID]
     );
-    res.json({ message: 'Ghi danh thành công', status: 'approved' });
+
+    // (Nếu không có trigger tăng mentee_current_count, có thể UPDATE ở đây:
+    // await pool.query(
+    //   'UPDATE tutor_pair SET mentee_current_count = mentee_current_count + 1 WHERE pairID = ?',
+    //   [pairID]
+    // );
+
+    return res.json({ message: 'Ghi danh thành công', status: 'approved' });
   } catch (e) {
     console.error(e);
+
+    // Đã ghi danh rồi
     if (e.code === 'ER_DUP_ENTRY') {
       return res.status(400).json({ message: 'Bạn đã ghi danh lớp học này.' });
     }
+
+    // Giả định: trigger trong DB dùng SQLSTATE '45000' để báo hết hạn ghi danh
+    // A1: Lớp học hết thời hạn ghi danh
     if (e.sqlState === '45000') {
-      return res.status(400).json({ message: 'Lớp học đã đủ hoặc hết hạn đăng ký.' });
+      return res.status(400).json({
+        message: 'Ghi danh thất bại vì qua thời hạn.'
+      });
     }
-    res.status(500).json({ message: 'Ghi danh thất bại.' });
+
+    // E1: Lỗi khác khi cập nhập danh sách xuống CSDL
+    return res.status(500).json({
+      message: 'Ghi danh thất bại vì không thể cập nhập danh sách sinh viên tham gia'
+    });
   }
 });
 
@@ -173,7 +216,7 @@ router.get('/classes/:pairID/content', async (req, res) => {
   }
 });
 
-// Thêm vào cuối backend/mentee.routes.js
+// Danh sách lớp theo subject query (nếu dùng)
 router.get('/classes', async (req, res) => {
   const { subject } = req.query;
   if (!subject) return res.status(400).json({ message: 'Thiếu subject' });
@@ -210,13 +253,15 @@ router.get('/profile', async (req, res) => {
   if (!email) return res.status(400).json({ message: 'Thiếu email' });
 
   try {
+    // Lấy thêm PersonalLink để mentee quản lý hồ sơ
     const [rows] = await pool.query(
-      `SELECT UserID, FullName, DateOfBirth, Gender, Phone, Email, Role
-       FROM \`user\`
-       WHERE Email = ? LIMIT 1`, [email]
+      `SELECT UserID, FullName, DateOfBirth, Gender, Phone, Email, Role, PersonalLink
+       FROM user
+       WHERE Email = ? LIMIT 1`,
+      [email]
     );
     if (!rows.length) return res.status(404).json({ message: 'Không tìm thấy người dùng' });
-    // không trả password
+
     return res.json(rows[0]);
   } catch (e) {
     console.error('PROFILE GET ERR:', e);
@@ -224,47 +269,95 @@ router.get('/profile', async (req, res) => {
   }
 });
 
-// PUT /api/profile  (body: { userID, fullName, dateOfBirth, gender, phone, email })
+
+// PUT /api/profile
+// Body: { userID, fullName, dateOfBirth, gender, phone, email, personalLink }
 router.put('/profile', async (req, res) => {
-  let { userID, fullName, dateOfBirth, gender, phone, email } = req.body || {};
+  let { userID, fullName, dateOfBirth, gender, phone, email, personalLink } = req.body || {};
+
+  // A1: Trường thông tin trống
   if (!userID || !fullName || !dateOfBirth || !gender || !phone || !email) {
-    return res.status(400).json({ message: 'Thiếu dữ liệu bắt buộc' });
+    return res.status(400).json({ message: 'Lỗi trường thông tin trống' });
   }
 
-  // Validate tối thiểu theo Business Rules
+  // A7 + R8: Giới hạn 50 ký tự
+  if (
+    fullName.length > 50 ||
+    email.length > 50 ||
+    phone.length > 50 ||
+    (personalLink && personalLink.length > 50)
+  ) {
+    return res.status(400).json({ message: 'Giới hạn 50 ký tự.' });
+  }
+
+  // A2 + R4: Email hợp lệ
   const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRe.test(email)) return res.status(400).json({ message: 'Email không hợp lệ' });
-  if (!['M','F'].includes(gender)) return res.status(400).json({ message: 'Giới tính chỉ M/F' });
-  if (!/^\d{9,11}$/.test(phone)) return res.status(400).json({ message: 'SĐT không hợp lệ' });
-  if (fullName.length > 50) return res.status(400).json({ message: 'Họ tên quá 50 ký tự' });
+  if (!emailRe.test(email)) {
+    return res.status(400).json({ message: 'Email không hợp lệ' });
+  }
+
+  // R1: Giới tính chỉ M/F
+  if (!['M', 'F'].includes(gender)) {
+    return res.status(400).json({ message: 'Giới tính chỉ bao gồm M/F' });
+  }
+
+  // A4 + R6: SĐT 9 chữ số
+  if (!/^\d{9}$/.test(phone)) {
+    return res.status(400).json({ message: 'SĐT không hợp lệ (phải 9 số)' });
+  }
+
+  // R2: Tuổi ≥ 18
+  const year = new Date(dateOfBirth).getFullYear();
+  const now = new Date().getFullYear();
+  if (now - year < 18) {
+    return res.status(400).json({ message: 'Tuổi phải ≥ 18' });
+  }
+
+  // A5 + R7: Liên kết cá nhân theo chuẩn https
+  if (personalLink && !personalLink.startsWith('https://')) {
+    return res.status(400).json({
+      message: 'Liên kết không hợp lệ (phải bắt đầu bằng https://)'
+    });
+  }
 
   try {
-    // Email mới đã có người dùng khác?
+    // A6 + R5: Email đã được đăng ký trước đó bởi user khác
     const [existed] = await pool.query(
-      `SELECT UserID FROM \`user\` WHERE Email = ? AND UserID <> ?`,
+      `SELECT UserID FROM user WHERE Email = ? AND UserID <> ?`,
       [email, userID]
     );
-    if (existed.length) return res.status(409).json({ message: 'Email đã được đăng ký trước đó' });
+    if (existed.length) {
+      return res.status(409).json({ message: 'Email đã được đăng ký trước đó.' });
+    }
 
-    await pool.query(
-      `UPDATE \`user\`
-       SET FullName=?, DateOfBirth=?, Gender=?, Phone=?, Email=?
+    // B11–B14: Cập nhật xuống CSDL
+    const [result] = await pool.query(
+      `UPDATE user
+       SET FullName=?, DateOfBirth=?, Gender=?, Phone=?, Email=?, PersonalLink=?
        WHERE UserID=?`,
-      [fullName, dateOfBirth, gender, phone, email, userID]
+      [fullName, dateOfBirth, gender, phone, email, personalLink || null, userID]
     );
 
-    // trả bản ghi mới
+    if (result.affectedRows === 0) {
+      return res.status(500).json({ message: 'Cập nhật thất bại. Vui lòng thử lại sau.' });
+    }
+
+    // Lấy lại bản ghi mới để FE cập nhật phiên làm việc hiện tại
     const [[u]] = await pool.query(
-      `SELECT UserID, FullName, DateOfBirth, Gender, Phone, Email, Role
-       FROM \`user\` WHERE UserID=?`, [userID]
+      `SELECT UserID, FullName, DateOfBirth, Gender, Phone, Email, Role, PersonalLink
+       FROM user WHERE UserID=?`,
+      [userID]
     );
-    return res.json({ message: 'Cập nhật thành công', profile: u });
+
+    return res.json({
+      message: 'Cập nhật thành công',
+      profile: u
+    });
+
   } catch (e) {
     console.error('PROFILE PUT ERR:', e);
     return res.status(500).json({ message: 'Cập nhật thất bại. Vui lòng thử lại sau.' });
   }
 });
-
-
 
 module.exports = router;

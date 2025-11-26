@@ -37,6 +37,23 @@
   box-shadow: 0 0 0 3px rgba(59,97,203,0.15);
 }
 
+/* ====== NEW: dropdown lọc hình thức học ====== */
+.dkmh__filterMode {
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid rgba(15,29,68,0.4);
+  border-radius: 8px;
+  background: #fff;
+  color: #0f1d44;
+  cursor: pointer;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.dkmh__filterMode:focus {
+  border-color: #3B61CB;
+  box-shadow: 0 0 0 3px rgba(59,97,203,0.15);
+}
+
 .dkmh__btn {
   height: 40px;
   min-width: 110px;
@@ -153,7 +170,7 @@
 /* ====== ROW LỚP ====== */
 .dkmh__row {
   display: grid;
-  grid-template-columns: repeat(6, 1fr) auto; /* 6 cột thông tin + cột actions */
+  grid-template-columns: repeat(6, 1fr) auto; 
   gap: 10px;
   align-items: center;
   padding: 10px 8px;

@@ -1,23 +1,168 @@
-.pm-overlay{
-  position: fixed; inset:0; background:rgba(0,0,0,.35);
-  display:flex; align-items:center; justify-content:center; z-index: 9999;
+/* Overlay nền mờ */
+.pm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
-.pm-modal{
-  background:#fff; width: 520px; max-width: 92vw; border-radius:12px;
-  box-shadow:0 10px 30px rgba(0,0,0,.2); padding:18px 20px;
+
+/* Hộp modal chính */
+.pm-modal {
+  background: #fff;
+  width: 520px;
+  max-width: 92vw;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 18px 20px 20px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
-.pm-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
-.pm-close{ border:none; background:#eee; border-radius:8px; padding:6px 10px; cursor:pointer;}
-.pm-grid{
-  display:grid; grid-template-columns:140px 1fr; gap:10px 14px; margin-top:8px;
+
+/* Header modal */
+.pm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
-.pm-grid label{ align-self:center; color:#333; }
-.pm-grid input, .pm-grid select{
-  padding:10px 12px; border:1px solid #ddd; border-radius:8px;
+
+.pm-head h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
 }
-.pm-actions{ display:flex; justify-content:flex-end; gap:10px; margin-top:16px;}
-.pm-btn{ padding:10px 14px; border-radius:8px; border:1px solid #ddd; background:#f6f6f6; cursor:pointer;}
-.pm-primary{ background:#3B61CB; color:#fff; border-color:#3B61CB;}
-.pm-alert{ padding:8px 10px; border-radius:8px; margin:8px 0;}
-.pm-err{ background:#ffe9e9; color:#b00000;}
-.pm-ok{ background:#e9f8ee; color:#137a2a;}
+
+/* Nút đóng */
+.pm-close {
+  border: none;
+  background: #eee;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.pm-close:hover {
+  background: #ddd;
+  transform: translateY(-1px);
+}
+
+/* Lưới form: label - input */
+.pm-grid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 14px 16px; /* hơi rộng cho dễ nhìn */
+  margin-top: 8px;
+}
+
+.pm-grid label {
+  align-self: center;
+  color: #333;
+  font-size: 14px;
+}
+
+.pm-grid input,
+.pm-grid select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Hover/focus cho input/select */
+.pm-grid input:focus,
+.pm-grid select:focus {
+  border-color: #3b61cb;
+  box-shadow: 0 0 0 2px rgba(59, 97, 203, 0.18);
+}
+
+/* Placeholder (nếu có) */
+.pm-grid input::placeholder {
+  color: #999;
+  font-size: 13px;
+}
+
+/* Hàng nút thao tác */
+.pm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+/* Nút chung */
+.pm-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #f6f6f6;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s ease, border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.pm-btn:hover {
+  background: #ededed;
+  transform: translateY(-1px);
+}
+
+/* Nút primary (Lưu thay đổi) */
+.pm-primary {
+  background: #3b61cb;
+  color: #fff;
+  border-color: #3b61cb;
+}
+
+.pm-primary:hover {
+  background: #324fb0;
+  border-color: #324fb0;
+}
+
+/* Alert message (lỗi / ok) */
+.pm-alert {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+/* Lỗi */
+.pm-err {
+  background: #ffe1e1;
+  color: #b00000;
+  border-left: 4px solid #cc0000;
+}
+
+/* Thành công */
+.pm-ok {
+  background: #e6ffe8;
+  color: #137a2a;
+  border-left: 4px solid #00a63d;
+}
+
+/* Responsive: màn hình nhỏ hơn 480px */
+@media (max-width: 480px) {
+  .pm-modal {
+    width: 100%;
+    max-width: 100vw;
+    border-radius: 0;
+    height: 100vh;
+    max-height: 100vh;
+  }
+
+  .pm-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pm-grid label {
+    font-weight: 500;
+  }
+}
