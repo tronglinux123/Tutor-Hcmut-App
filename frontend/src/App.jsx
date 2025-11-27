@@ -34,7 +34,7 @@ function App() {
       <>
       <Route path='/' element={<RootLayout />}>
         <Route index element={<Home />} />
-        {/* <Route path='library' element={<Library />} /> */}
+        <Route path='library' element={<Library />} />
         <Route path='settingstudy' element={<MentorRoute><SettingStudy /></MentorRoute>} />
         <Route path='settingstudy/dangkydayhoc' element={<MentorRoute><DangKyDayHoc /></MentorRoute>} />
         <Route path='settingstudy/myclass' element={<MentorRoute><MyClass /></MentorRoute>} />
