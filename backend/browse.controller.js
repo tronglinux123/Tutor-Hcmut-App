@@ -52,44 +52,71 @@ exports.browseSetting = async (req,res) => {
     }   
 }
 
+// exports.browseclass = async (req, res) => {
+//     try {
+//         const { status } = req.body;
+//         // console.log(status);
+//         let query = `SELECT
+//                         e.*,
+//                         u.FullName,
+//                         tp.mentee_current_count,  
+//                         tp.mentee_capacity
+//                     FROM
+//                         enroll e
+//                     JOIN
+//                         mentor m ON e.mentorID = m.mentorID
+//                     JOIN
+//                         user u ON m.mentorID = u.UserID
+//                     LEFT JOIN
+//                         tutor_pair tp ON e.enrollID = tp.enrollID
+//                     `;
+//         const params = [];
+//         if (status !== 'all') {
+//             query += ' WHERE e.status = ?';
+//             params.push(status);
+//         }
+//         query += ';';
+//         const [rows] = await pool.execute(query,params);
+//         if (rows.length === 0) {
+//             return res.status(200).json({ 
+//                 message: 'Không tìm thấy đơn nào.', 
+//                 user: [] 
+//             });
+//         }
+//         // console.log(rows);
+//         return res.status(200).json({ 
+//             user: rows,
+//             // message: 'Tải đơn thành công.'
+//         });
+//     } catch (err) {
+//         console.log('err backend', err);
+//         return res.status(500).json({ message: "Lỗi hệ thống Server."});
+//     }
+// }
+
 exports.browseclass = async (req, res) => {
     try {
-        const { status } = req.body;
-        // console.log(status);
-        let query = `SELECT
-                        e.*,
-                        u.FullName,
-                        tp.mentee_current_count,  
-                        tp.mentee_capacity
-                    FROM
-                        enroll e
-                    JOIN
-                        mentor m ON e.mentorID = m.mentorID
-                    JOIN
-                        user u ON m.mentorID = u.UserID
-                    LEFT JOIN
-                        tutor_pair tp ON e.enrollID = tp.enrollID
-                    `;
-        const params = [];
-        if (status !== 'all') {
-            query += ' WHERE e.status = ?';
-            params.push(status);
-        }
-        query += ';';
-        const [rows] = await pool.execute(query,params);
-        if (rows.length === 0) {
+        const status = req.body.status || 'all'; 
+
+        const SQL_CALL = 'CALL sp_browse_enrollment_classes(?)';
+        const [rows] = await pool.execute(SQL_CALL, [status]);
+
+        const enrollments = rows[0];
+
+        if (!enrollments || enrollments.length === 0) {
             return res.status(200).json({ 
                 message: 'Không tìm thấy đơn nào.', 
                 user: [] 
             });
         }
-        // console.log(rows);
+        console.log(enrollments)
         return res.status(200).json({ 
-            user: rows,
+            user: enrollments,
             // message: 'Tải đơn thành công.'
         });
+
     } catch (err) {
-        console.log('err backend', err);
+        console.error('err backend', err);
         return res.status(500).json({ message: "Lỗi hệ thống Server."});
     }
 }

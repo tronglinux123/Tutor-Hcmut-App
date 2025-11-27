@@ -217,6 +217,7 @@ function Header() {
             const response = await axios.post(`${BACKEND_URL}/api/MyMentor`,{
                 menteeID: storage_id
             });
+            console.log('hi')
             console.log(response.data.user)
             setMymentor(response.data.user);
         } catch(error) {
@@ -329,7 +330,7 @@ function Header() {
                 await Promise.all([
                     handleselectForUser(storage_id),
                     handleselectMenteeSche(storage_id),
-                    handleMyMentor(storage_id),
+                    handleMyMentor(storage_id)
                 ]);
             } else if (storage_userRole === 'mentor') {
                 await Promise.all([

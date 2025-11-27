@@ -338,7 +338,7 @@ exports.TakeMyClass = async (req,res) => {
 exports.MyMentor = async (req,res) => {
     try {
         const { menteeID } = req.body
-        
+        console.log('sdas')
         if (!menteeID) {
             return res.status(400).json({ message: "Thiếu ID học viên." });
         }
@@ -346,14 +346,15 @@ exports.MyMentor = async (req,res) => {
         const SQL_CALL = 'CALL usp_LayMentorTheoMentee(?)';
         
         const [rows] = await pool.execute(SQL_CALL, [menteeID]);
-        
+        console.log(rows)
         const mentors = rows[0]; 
 
         if (mentors.length === 0) {
             return res.status(200).json({
-                data: []
+                user: []
             });
         }
+        console.log('sdas')
         console.log(mentors)
         return res.status(200).json({
             user: mentors

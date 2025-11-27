@@ -10,6 +10,9 @@ CREATE TABLE `admin` (
   CONSTRAINT `FK_Admin_User` FOREIGN KEY (`adminID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SELECT * FROM admin
+DELETE FROM admin;
+
 --
 -- Table structure for table `enroll`
 --
@@ -33,6 +36,9 @@ CREATE TABLE `enroll` (
   CONSTRAINT `chk_session_range` CHECK (((`begin_session` >= 1) and (`begin_session` <= 17) and (`end_session` >= 1) and (`end_session` <= 17)))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SELECT * FROM enroll
+DELETE FROM enroll;
+
 --
 -- Table structure for table `outline`
 --
@@ -49,6 +55,9 @@ CREATE TABLE `outline` (
   KEY `FK_Outline_pair` (`PairID`),
   CONSTRAINT `FK_Outline_pair` FOREIGN KEY (`PairID`) REFERENCES `tutor_pair` (`pairID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+SELECT * FROM outline
+DELETE FROM outline;
 
 --
 -- Table structure for table `feedback_tutor`
@@ -69,6 +78,9 @@ CREATE TABLE `feedback_tutor` (
   CONSTRAINT `FK_FeedbackTutor_Mentor` FOREIGN KEY (`mentorID`) REFERENCES `mentor` (`mentorID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SELECT * FROM feedback_tutor
+DELETE FROM feedback_tutor;
+
 --
 -- Table structure for table `mentee`
 --
@@ -80,6 +92,9 @@ CREATE TABLE `mentee` (
   UNIQUE KEY `menteeID_UNIQUE` (`menteeID`),
   CONSTRAINT `FK_Mentee_User` FOREIGN KEY (`menteeID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+SELECT * FROM mentee
+DELETE FROM mentee;
 
 --
 -- Table structure for table `mentee_list`
@@ -94,6 +109,9 @@ CREATE TABLE `mentee_list` (
   CONSTRAINT `FK_mentee_list_mentee` FOREIGN KEY (`menteeID`) REFERENCES `mentee` (`menteeID`) ON DELETE CASCADE,
   CONSTRAINT `FK_mentee_list_pair` FOREIGN KEY (`pairID`) REFERENCES `tutor_pair` (`pairID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+SELECT * FROM mentee_list
+DELETE FROM mentee_list;
 
 --
 -- Table structure for table `mentor`
@@ -113,6 +131,9 @@ CREATE TABLE `mentor` (
   CONSTRAINT `CHK_job_check_mentor` CHECK ((`job` in (_utf8mb4'nghien_cuu_sinh',_utf8mb4'sinh_vien',_utf8mb4'sinh_vien_sau_dh',_utf8mb4'giang_vien'))),
   CONSTRAINT `CHK_year_check_mentor` CHECK ((`sinh_vien_nam` in (_utf8mb4'none',_utf8mb4'nam_2',_utf8mb4'nam_3',_utf8mb4'nam_4')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+SELECT * FROM mentor
+DELETE FROM mentor;
 
 --
 -- Table structure for table `tutor_pair`
@@ -140,6 +161,9 @@ CREATE TABLE `tutor_pair` (
   CONSTRAINT `chk_tutor_pair_session_range` CHECK (((`begin_session` >= 1) and (`begin_session` <= 15) and (`end_session` >= 1) and (`end_session` <= 15)))
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SELECT * FROM tutor_pair
+DELETE FROM tutor_pair;
+
 --
 -- Table structure for table `subject`
 --
@@ -152,6 +176,9 @@ CREATE TABLE `subject` (
   CONSTRAINT `FK_Subject_Faculty` FOREIGN KEY (`FacultyID`) REFERENCES `faculty` (`FacultyID`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SELECT * FROM subject
+DELETE FROM subject;
+
 --
 -- Table structure for table `faculty`
 --
@@ -162,6 +189,9 @@ CREATE TABLE `faculty` (
   `Faculty_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`FacultyID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+SELECT * FROM faculty
+DELETE FROM faculty;
 
 --
 -- Table structure for table `tutor_application`
@@ -191,6 +221,9 @@ CREATE TABLE `tutor_application` (
   CONSTRAINT `CHK_year_check` CHECK ((`sinh_vien_nam` in (_utf8mb4'none',_utf8mb4'nam_2',_utf8mb4'nam_3',_utf8mb4'nam_4')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+SELECT * FROM tutor_application
+DELETE FROM tutor_application;
+
 --
 -- Table structure for table `user`
 --
@@ -211,3 +244,12 @@ CREATE TABLE `user` (
   CONSTRAINT `CHK_User_gender` CHECK ((`Gender` in (_utf8mb4'M',_utf8mb4'F'))),
   CONSTRAINT `CHK_User_Role` CHECK ((`Role` in (_utf8mb4'admin',_utf8mb4'mentee',_utf8mb4'mentor')))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+SELECT * FROM user
+DELETE FROM user;
+
+SHOW TRIGGERS IN my_fullstack_db
+
+SHOW TABLES IN my_fullstack_db
+
+SHOW PROCEDURE STATUS WHERE Db = 'my_fullstack_db';

@@ -18,14 +18,14 @@ import magnetuser2 from '../image/magnetuser2.png';
 
 const sidebarItemss = {
   guest: [
-    { id: 1, name: "Thư viện", icon: book1, hoverIcon: book2, path:'/library' },
+    // { id: 1, name: "Thư viện", icon: book1, hoverIcon: book2, path:'/library' },
   ],
   mentee: [
-    { id: 1, name: "Thư viện", icon: book1, hoverIcon: book2, path:'/library' },
+    // { id: 1, name: "Thư viện", icon: book1, hoverIcon: book2, path:'/library' },
     { id: 2, name: "Lớp học", icon: study1, hoverIcon: study2, path:'/study' }, 
   ],
   mentor: [
-    { id: 1, name: "Thư viện", icon: book1, hoverIcon: book2, path:'/library' },
+    // { id: 1, name: "Thư viện", icon: book1, hoverIcon: book2, path:'/library' },
     { id: 3, name: "Tùy chỉnh lớp học", icon: write1, hoverIcon: write2, path:'/settingstudy' }, 
   ],
   admin: [
